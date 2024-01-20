@@ -16,7 +16,7 @@ const agregarPost = async (titulo, img, descripcion, likes) => {
 };
 
 const obtenerPost = async () => {
-  const { rows } = await pool.query("SELECT * FROM posts");
+  const { rows } = await pool.query("SELECT * FROM posts ORDER BY id DESC");
   return rows;
 };
 obtenerPost();
