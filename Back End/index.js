@@ -19,8 +19,8 @@ app.get("/posts", async (req, res) => {
 });
 
 app.post("/posts", async (req, res) => {
-  const { titulo, img, descripcion, likes = 0 } = req.body;
-  await agregarPost(titulo, img, descripcion, likes);
+  const { titulo, url, descripcion, likes = 0 } = req.body;
+  await agregarPost(titulo, url, descripcion, likes);
   res.send("Post agregado con éxito");
 });
 
