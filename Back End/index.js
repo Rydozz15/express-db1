@@ -19,9 +19,34 @@ app.get("/posts", async (req, res) => {
 });
 
 app.post("/posts", async (req, res) => {
-  const { titulo, url, descripcion, likes = 0 } = req.body;
-  await agregarPost(titulo, url, descripcion, likes);
-  res.send("Post agregado con éxito");
+  try {
+    const { titulo, url, descripcion, likes = 0 } = req.body;
+    if (!titulo) {
+      throw new Error("Coloca un nombre");
+    }
+    await agregarPost(titulo, url, descripcion, likes);
+    res.send("Post agregado con éxito");
+  } catch (error) {
+    const { code } = error;
+    switch (code) {
+      case "22P02":
+        res
+          .status(400)
+          .send(
+            "invalid_text_representation, está yendo texto donde no debería"
+          );
+        break;
+      case "22001":
+        res
+          .status(400)
+          .send(
+            "string_data_right_truncation, probablemente tiene demasiados caractéres"
+          );
+        break;
+      default:
+        res.status(500).send(error.message);
+    }
+  }
 });
 
 app.put("/posts/like/:id", async (req, res) => {
