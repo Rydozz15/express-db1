@@ -1,4 +1,4 @@
-const { agregarPost, obtenerPost } = require("./consultas");
+const { agregarPost, obtenerPost, likeAPost } = require("./consultas");
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -17,4 +17,10 @@ app.post("/posts", async (req, res) => {
   const { titulo, img, descripcion, likes = 0 } = req.body;
   await agregarPost(titulo, img, descripcion, likes);
   res.send("Post agregado con éxito");
+});
+
+app.put("/posts/like/:id", async (req, res) => {
+  const { id } = req.params;
+  await likeAPost(id);
+  res.send("Post likeado con éxito");
 });

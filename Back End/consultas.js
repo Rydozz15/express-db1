@@ -17,9 +17,14 @@ const agregarPost = async (titulo, img, descripcion, likes) => {
 
 const obtenerPost = async () => {
   const { rows } = await pool.query("SELECT * FROM posts");
-  console.log(rows);
   return rows;
 };
 obtenerPost();
 
-module.exports = { agregarPost, obtenerPost };
+const likeAPost = async (id) => {
+  const query = "UPDATE posts SET likes = likes + 1 WHERE id = $1 RETURNING *";
+  const { rows } = await pool.query(query, [id]);
+  return rows[0];
+};
+
+module.exports = { agregarPost, obtenerPost, likeAPost };
