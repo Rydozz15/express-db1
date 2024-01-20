@@ -24,7 +24,11 @@ obtenerPost();
 const likeAPost = async (id) => {
   const query = "UPDATE posts SET likes = likes + 1 WHERE id = $1 RETURNING *";
   const { rows } = await pool.query(query, [id]);
-  return rows[0];
 };
 
-module.exports = { agregarPost, obtenerPost, likeAPost };
+const eliminarPost = async (id) => {
+  const query = "DELETE FROM posts WHERE id = $1";
+  const { rows } = await pool.query(query, [id]);
+};
+
+module.exports = { agregarPost, obtenerPost, likeAPost, eliminarPost };
