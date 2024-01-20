@@ -22,8 +22,11 @@ const obtenerPost = async () => {
 obtenerPost();
 
 const likeAPost = async (id) => {
-  const query = "UPDATE posts SET likes = likes + 1 WHERE id = $1 RETURNING *";
-  const { rows } = await pool.query(query, [id]);
+  const query = "UPDATE posts SET likes = likes + 1 WHERE id = $1";
+  const { rowCount } = await pool.query(query, [id]);
+  if (rowCount === 0) {
+    throw { code: 404, message: "No se consiguió ningún post con ese id" };
+  }
 };
 
 const eliminarPost = async (id) => {

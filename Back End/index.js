@@ -51,8 +51,12 @@ app.post("/posts", async (req, res) => {
 
 app.put("/posts/like/:id", async (req, res) => {
   const { id } = req.params;
-  await likeAPost(id);
-  res.send("Post likeado con éxito");
+  try {
+    await likeAPost(id);
+    res.send("Post likeado con éxito");
+  } catch ({ code, message }) {
+    res.status(code).send(message);
+  }
 });
 
 app.delete("/posts/:id", async (req, res) => {
