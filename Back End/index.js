@@ -61,6 +61,10 @@ app.put("/posts/like/:id", async (req, res) => {
 
 app.delete("/posts/:id", async (req, res) => {
   const { id } = req.params;
-  await eliminarPost(id);
-  res.send("Post eliminado con éxito");
+  try {
+    await eliminarPost(id);
+    res.send("Post eliminado con éxito");
+  } catch ({ code, message }) {
+    res.status(code).send(message);
+  }
 });
